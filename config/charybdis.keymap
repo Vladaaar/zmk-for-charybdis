@@ -10,6 +10,11 @@
     quick-tap-ms = <150>;
 };
 
+&mt {
+    flavor = "tap-preferred";
+    tapping-term-ms = <250>;
+};
+
 / {
     macros {
         To1_macro: To1_macro {
@@ -74,6 +79,26 @@
             bindings = <&mkp MB3>;
             key-positions = <43 44 45>;
         };
+
+        up {
+            bindings = <&kp UP>;
+            key-positions = <15 20>;
+        };
+
+        left {
+            bindings = <&kp LEFT>;
+            key-positions = <26 31>;
+        };
+
+        down {
+            bindings = <&kp DOWN>;
+            key-positions = <27 32>;
+        };
+
+        right {
+            bindings = <&kp RIGHT>;
+            key-positions = <28 33>;
+        };
     };
 
     keymap {
@@ -90,12 +115,12 @@
             >;
         };
 
-        F_layers {
+        NAV {
             bindings = <
-&trans  &kp F1    &kp F2  &kp F4  &kp F5  &kp F6        &kp F7     &kp F8    &kp F9    &kp F10    &kp F11    &kp EQUAL
-&trans  &kt EXCL  &kp AT  &none   &none   &trans        &none      &none     &kp UP    &trans     &kp MINUS  &kp EQUAL
-&trans  &none     &none   &none   &none   &trans        &trans     &kp LEFT  &kp DOWN  &kp RIGHT  &trans     &trans
-&trans  &trans    &trans  &trans  &trans  &none         &none      &trans    &trans    &trans     &none      &trans
+&trans  &kp F1    &kp F2  &kp F4  &kp F5  &kp F6        &kp F7     &kp F8           &kp F9    &kp F10      &kp F11    &kp EQUAL
+&trans  &kt EXCL  &kp AT  &trans  &trans  &trans        &trans     &kp LS(LG(TAB))  &kp UP    &kp LG(TAB)  &kp MINUS  &kp EQUAL
+&trans  &trans    &trans  &trans  &trans  &trans        &trans     &kp LEFT         &kp DOWN  &kp RIGHT    &trans     &trans
+&trans  &trans    &trans  &trans  &trans  &trans        &trans     &kp BSPC         &trans    &kp DEL      &trans     &trans
                           &trans  &trans  &To0_macro    &mkp LCLK  &trans
                                   &trans  &trans        &trans
             >;
@@ -136,12 +161,12 @@
 
         Game {
             bindings = <
-&trans  &kp GRAVE  &kp N1  &kp N2  &kp N3  &kp N4    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp TAB    &kp Q   &kp W   &kp E   &kp R     &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp CAPS   &kp A   &kp S   &kp D   &kp F     &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &kp LSHFT  &kp Z   &kp X   &kp C   &kp V     &trans  &trans  &trans  &trans  &trans  &trans
-                           &trans  &trans  &trans    &trans  &trans
-                                   &trans  &trans    &trans
+&kp ESCAPE  &kp GRAVE  &kp N1  &kp N2  &kp N3  &kp N4    &trans  &trans  &trans  &trans  &trans  &trans
+&trans      &kp TAB    &kp Q   &kp W   &kp E   &kp R     &trans  &trans  &trans  &trans  &trans  &trans
+&trans      &kp CAPS   &kp A   &kp S   &kp D   &kp F     &trans  &trans  &trans  &trans  &trans  &trans
+&trans      &kp LSHFT  &kp Z   &kp X   &kp C   &kp V     &trans  &trans  &trans  &trans  &trans  &trans
+                               &trans  &trans  &trans    &trans  &trans
+                                       &trans  &trans    &trans
             >;
         };
     };
