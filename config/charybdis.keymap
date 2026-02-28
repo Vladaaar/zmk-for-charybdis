@@ -42,15 +42,10 @@
                 <&rgb_ug RGB_COLOR_HSB(250,100,50)>;
         };
 
-        brackets: parentheses {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings =
-                <&macro_press>,
-                <&kp &macro_param_1to1 &kp MACRO_PLACEHOLDER>,
-                <&macro_press>,
-                <&kp LEFT_ARROW>;
-
+        parentheses: parentheses {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(N9) &kp LS(N0) &kp LEFT_ARROW>;
             label = "PARENTHESES";
         };
 
@@ -75,6 +70,20 @@
                 <&kp LC(SPACE)>;
 
             label = "CHANGE_LAYOUT";
+        };
+
+        brackets: brackets {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LEFT_BRACKET &kp RIGHT_BRACKET &kp LEFT_ARROW>;
+            label = "BRACKETS";
+        };
+
+        guillemets: guillemets {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LA(RIGHT_BRACKET) &kp LS(LA(RIGHT_BRACKET)) &kp LEFT_ARROW>;
+            label = "GUILLEMETS";
         };
     };
 
@@ -138,10 +147,10 @@
     };
 
     behaviors {
-        brackets_on_hold: brackets_on_hold {
+        symbols_on_hold: symbols_on_hold {
             compatible = "zmk,behavior-hold-tap";
-            label = "BRACKETS_ON_HOLD";
-            bindings = <&brackets>, <&kp>;
+            label = "SYMBOLS_ON_HOLD";
+            bindings = <&parentheses>, <&kp>;
 
             #binding-cells = <2>;
             tapping-term-ms = <200>;
@@ -155,6 +164,38 @@
 
             #binding-cells = <2>;
             tapping-term-ms = <200>;
+            flavor = "tap-preferred";
+            hold-trigger-on-release;
+        };
+
+        parentheses_on_hold: parentheses_on_hold {
+            compatible = "zmk,behavior-hold-tap";
+            label = "PARENTHESES_ON_HOLD";
+            bindings = <&parentheses>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            flavor = "tap-preferred";
+        };
+
+        brackets_on_hold: brackets_on_hold {
+            compatible = "zmk,behavior-hold-tap";
+            label = "BRACKETS_ON_HOLD";
+            bindings = <&brackets>, <&kp>;
+
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+        };
+
+        guillemets_on_hold: guillemets_on_hold {
+            compatible = "zmk,behavior-hold-tap";
+            label = "GUILLEMETS_ON_HOLD";
+            bindings = <&guillemets>, <&kp>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            flavor = "tap-preferred";
         };
     };
 
@@ -163,10 +204,10 @@
 
         QWERTY {
             bindings = <
-&kp ESC         &mt LS(N1) NUMBER_1  &mt LS(N2) NUMBER_2  &mt LS(NUMBER_3) NUMBER_3  &mt LS(N4) NUMBER_4  &mt LS(N5) NUMBER_5             &mt RS(N6) NUMBER_6  &mt RS(N7) NUMBER_7  &mt RS(N8) NUMBER_8  &mt LS(N9) N9         &mt RS(N0) NUMBER_0  &mt LS(LA(MINUS)) MINUS
-&key_repeat     &mt LS(LCTRL) Q      &mt LS(LEFT_ALT) W   &mt LS(LCMD) E             &kp R                &mt GRAVE T                     &kp Y                &kp U                &mt RS(RCMD) I       &mt RS(RIGHT_ALT) O   &mt RS(RCTRL) P      &mt RIGHT_BRACKET LEFT_BRACKET
-&sk LEFT_SHIFT  &mt LCTRL A          &mt LEFT_ALT S       &mt LCMD D                 &mt LSHIFT F         &kp G                           &kp H                &mt RSHIFT J         &mt RCMD K           &mt RIGHT_ALT L       &mt RCTRL SEMI       &lt 4 SQT
-&kp LEFT        &mt LG(Z) Z          &mt LG(X) X          &mt LG(C) C                &mt LG(V) V          &kp B                           &kp N                &kp M                &mt LA(RBKT) COMMA   &mt LA(LS(RBKT)) DOT  &mt BACKSLASH SLASH  &kp RIGHT
+&kp ESC         &mt LS(N1) NUMBER_1  &mt LS(N2) NUMBER_2  &mt LS(NUMBER_3) NUMBER_3  &mt LS(N4) NUMBER_4  &mt LS(N5) NUMBER_5             &mt RS(N6) NUMBER_6  &mt RS(N7) NUMBER_7  &mt RS(N8) NUMBER_8          &parentheses_on_hold 0 N9  &brackets_on_hold 0 NUMBER_0  &mt LS(LA(MINUS)) MINUS
+&key_repeat     &mt LS(LCTRL) Q      &mt LS(LEFT_ALT) W   &mt LS(LCMD) E             &kp R                &mt GRAVE T                     &kp Y                &kp U                &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
+&sk LEFT_SHIFT  &mt LCTRL A          &mt LEFT_ALT S       &mt LCMD D                 &mt LSHIFT F         &kp G                           &kp H                &mt RSHIFT J         &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
+&kp LEFT        &mt LG(Z) Z          &mt LG(X) X          &mt LG(C) C                &mt LG(V) V          &kp B                           &kp N                &kp M                &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
                                                           &lt 1 BACKSPACE            &lt 2 SPACE          &another_lang_on_hold 0 CAPS    &lt 2 LS(SLASH)      &mt LA(LCTRL) SPACE
                                                                                      &lt 3 TAB            &lt 4 DEL                       &lt 3 RET
             >;
@@ -174,22 +215,22 @@
 
         SYMBOLS_FUNC {
             bindings = <
-&kp TILDE  &kp F1    &kp F2   &kp F3    &kp F4      &kp F5         &kp F6     &kp F7     &kp F8     &kp F9                &kp F10                &kp EQUAL
-&kp TILDE  &kp EXCL  &kp AT   &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET  &kp AMPS   &kp ASTRK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp UNDER
-&kp LBKT   &trans    &trans   &trans    &trans      &trans         &trans     &trans     &trans     &trans                &trans                 &kp RBKT
-&kp SLASH  &kp F11   &kp F12  &kp F13   &kp F14     &kp F15        &kp F16    &kp F17    &kp F18    &kp F19               &kp F20                &kp BSLH
-                              &trans    &trans      &trans         &trans     &kp SPACE
+&kp GRAVE  &kp F1    &kp F2   &kp F3    &kp F4      &kp F5         &kp F6        &kp F7     &kp F8     &kp F9                &kp F10                &kp EQUAL
+&kp TILDE  &kp EXCL  &kp AT   &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET     &kp AMPS   &kp ASTRK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp UNDER
+&kp LBKT   &trans    &trans   &trans    &trans      &kp PIPE       &kp QUESTION  &trans     &trans     &trans                &trans                 &kp RBKT
+&kp SLASH  &kp F11   &kp F12  &kp F13   &kp F14     &kp F15        &kp F16       &kp F17    &kp F18    &kp F19               &kp F20                &kp BSLH
+                              &trans    &trans      &trans         &trans        &kp SPACE
                                         &trans      &trans         &trans
             >;
         };
 
         NAV_EDIT {
             bindings = <
-&trans  &trans     &trans     &trans     &trans     &trans    &trans             &trans         &trans         &trans       &trans     &trans
-&trans  &trans     &trans     &trans     &trans     &trans    &trans             &kp HOME       &kp PAGE_DOWN  &kp PAGE_UP  &kp END    &trans
-&trans  &trans     &trans     &trans     &trans     &trans    &kp LA(LEFT)       &kp LEFT       &kp DOWN       &kp UP       &kp RIGHT  &kp LA(RIGHT)
-&trans  &kp LG(Z)  &kp LG(X)  &kp LG(C)  &kp LG(V)  &trans    &kp LA(BACKSPACE)  &kp BACKSPACE  &kp INS        &kp LC(T)    &kp DEL    &kp LA(DEL)
-                              &trans     &trans     &trans    &trans             &trans
+&trans  &trans     &trans     &trans     &trans     &trans    &trans                           &trans         &trans         &trans       &trans     &trans
+&trans  &trans     &trans     &trans     &trans     &trans    &trans                           &kp HOME       &kp PAGE_DOWN  &kp PAGE_UP  &kp END    &trans
+&trans  &trans     &trans     &trans     &trans     &trans    &mt LG(LEFT) LA(LEFT_ARROW)      &kp LEFT       &kp DOWN       &kp UP       &kp RIGHT  &mt LG(RIGHT) LA(RIGHT)
+&trans  &kp LG(Z)  &kp LG(X)  &kp LG(C)  &kp LG(V)  &trans    &mt LG(BACKSPACE) LA(BACKSPACE)  &kp BACKSPACE  &kp INS        &kp LC(T)    &kp DEL    &mt LG(DEL) LA(DEL)
+                              &trans     &trans     &trans    &trans                           &trans
                                          &trans     &trans    &trans
             >;
         };
@@ -229,12 +270,12 @@
 
         Game {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &kp Q   &kp W   &kp E   &kp R     &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &kp A   &kp S   &kp D   &kp F     &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &kp Z   &kp X   &kp C   &kp V     &trans  &trans  &trans  &trans  &trans  &trans
-                        &trans  &trans  &trans    &trans  &trans
-                                &trans  &trans    &trans
+&trans          &kp NUMBER_1    &kp N2  &kp N3  &kp N4  &kp N5    &trans  &trans  &trans  &trans  &trans  &trans
+&kp TAB         &kp TAB         &kp Q   &kp W   &kp E   &kp R     &trans  &trans  &trans  &trans  &trans  &trans
+&none           &none           &kp A   &kp S   &kp D   &kp F     &trans  &trans  &trans  &trans  &trans  &trans
+&kp LEFT_SHIFT  &kp LEFT_SHIFT  &kp Z   &kp X   &kp C   &kp V     &trans  &trans  &trans  &trans  &trans  &trans
+                                        &trans  &trans  &trans    &trans  &trans
+                                                &trans  &trans    &trans
             >;
         };
     };
