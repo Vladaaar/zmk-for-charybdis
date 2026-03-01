@@ -64,9 +64,8 @@
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings =
-                <&macro_press>,
                 <&kp LC(SPACE)>,
-                <&macro_release>,
+                <&macro_pause_for_release>,
                 <&kp LC(SPACE)>;
 
             label = "CHANGE_LAYOUT";
@@ -84,6 +83,13 @@
             #binding-cells = <0>;
             bindings = <&kp LA(RIGHT_BRACKET) &kp LS(LA(RIGHT_BRACKET)) &kp LEFT_ARROW>;
             label = "GUILLEMETS";
+        };
+
+        strikethrough: strikethrough {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(X) &kp TILDE &kp TILDE &kp LG(V) &kp TILDE &kp TILDE>;
+            label = "STRIKETHROUGH";
         };
     };
 
@@ -204,21 +210,21 @@
 
         QWERTY {
             bindings = <
-&kp ESC         &mt LS(N1) NUMBER_1  &mt LS(N2) NUMBER_2  &mt LS(NUMBER_3) NUMBER_3  &mt LS(N4) NUMBER_4  &mt LS(N5) NUMBER_5             &mt RS(N6) NUMBER_6  &mt RS(N7) NUMBER_7  &mt RS(N8) NUMBER_8          &parentheses_on_hold 0 N9  &brackets_on_hold 0 NUMBER_0  &mt LS(LA(MINUS)) MINUS
-&key_repeat     &mt LS(LCTRL) Q      &mt LS(LEFT_ALT) W   &mt LS(LCMD) E             &kp R                &mt GRAVE T                     &kp Y                &kp U                &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
-&sk LEFT_SHIFT  &mt LCTRL A          &mt LEFT_ALT S       &mt LCMD D                 &mt LSHIFT F         &kp G                           &kp H                &mt RSHIFT J         &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
-&kp LEFT        &mt LG(Z) Z          &mt LG(X) X          &mt LG(C) C                &mt LG(V) V          &kp B                           &kp N                &kp M                &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
-                                                          &lt 1 BACKSPACE            &lt 2 SPACE          &another_lang_on_hold 0 CAPS    &lt 2 LS(SLASH)      &mt LA(LCTRL) SPACE
-                                                                                     &lt 3 TAB            &lt 4 DEL                       &lt 3 RET
+&kp ESC         &mt LS(N1) NUMBER_1  &mt LS(N2) NUMBER_2  &mt LS(NUMBER_3) NUMBER_3  &mt LS(N4) NUMBER_4  &mt LS(N5) NUMBER_5                  &mt RS(N6) NUMBER_6  &mt RS(N7) NUMBER_7  &mt RS(N8) NUMBER_8          &parentheses_on_hold 0 N9  &brackets_on_hold 0 NUMBER_0  &mt LS(LA(MINUS)) MINUS
+&key_repeat     &mt LS(LCTRL) Q      &mt LS(LEFT_ALT) W   &mt LS(LCMD) E             &kp R                &mt GRAVE T                          &kp Y                &kp U                &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
+&sk LEFT_SHIFT  &mt LCTRL A          &mt LEFT_ALT S       &mt LCMD D                 &mt LSHIFT F         &kp G                                &kp H                &mt RSHIFT J         &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
+&kp LEFT        &mt LG(Z) Z          &mt LG(X) X          &mt LG(C) C                &mt LG(V) V          &kp B                                &kp N                &kp M                &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
+                                                          &lt 1 BACKSPACE            &lt 2 SPACE          &another_lang_on_hold 0 LC(SPACE)    &lt 2 LS(SLASH)      &mt LA(LCTRL) SPACE
+                                                                                     &lt 3 TAB            &lt 4 DEL                            &lt 3 RET
             >;
         };
 
         SYMBOLS_FUNC {
             bindings = <
-&kp GRAVE  &kp F1    &kp F2   &kp F3    &kp F4      &kp F5         &kp F6        &kp F7     &kp F8     &kp F9                &kp F10                &kp EQUAL
-&kp TILDE  &kp EXCL  &kp AT   &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET     &kp AMPS   &kp ASTRK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp UNDER
-&kp LBKT   &trans    &trans   &trans    &trans      &kp PIPE       &kp QUESTION  &trans     &trans     &trans                &trans                 &kp RBKT
-&kp SLASH  &kp F11   &kp F12  &kp F13   &kp F14     &kp F15        &kp F16       &kp F17    &kp F18    &kp F19               &kp F20                &kp BSLH
+&kp GRAVE  &kp F1    &kp F2   &kp F3    &kp F4      &kp F5         &kp F6        &kp F7       &kp F8        &kp F9                &kp F10                &kp EQUAL
+&kp TILDE  &kp EXCL  &kp AT   &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET     &kp AMPS     &kp ASTRK     &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp UNDER
+&kp LBKT   &trans    &trans   &trans    &trans      &kp PIPE       &kp QUESTION  &trans       &trans        &trans                &trans                 &kp RBKT
+&kp SLASH  &kp F11   &kp F12  &kp F13   &kp F14     &kp F15        &kp F16       &kp KP_PLUS  &kp KP_MINUS  &kp KP_MULTIPLY       &kp KP_DIVIDE          &kp BSLH
                               &trans    &trans      &trans         &trans        &kp SPACE
                                         &trans      &trans         &trans
             >;
@@ -226,12 +232,12 @@
 
         NAV_EDIT {
             bindings = <
-&trans  &trans     &trans     &trans     &trans     &trans    &trans                           &trans         &trans         &trans       &trans     &trans
-&trans  &trans     &trans     &trans     &trans     &trans    &trans                           &kp HOME       &kp PAGE_DOWN  &kp PAGE_UP  &kp END    &trans
-&trans  &trans     &trans     &trans     &trans     &trans    &mt LG(LEFT) LA(LEFT_ARROW)      &kp LEFT       &kp DOWN       &kp UP       &kp RIGHT  &mt LG(RIGHT) LA(RIGHT)
-&trans  &kp LG(Z)  &kp LG(X)  &kp LG(C)  &kp LG(V)  &trans    &mt LG(BACKSPACE) LA(BACKSPACE)  &kp BACKSPACE  &kp INS        &kp LC(T)    &kp DEL    &mt LG(DEL) LA(DEL)
-                              &trans     &trans     &trans    &trans                           &trans
-                                         &trans     &trans    &trans
+&trans  &trans     &trans     &trans     &trans     &trans       &trans                           &trans         &trans         &trans       &trans     &strikethrough
+&trans  &trans     &trans     &trans     &trans     &trans       &trans                           &kp HOME       &kp PAGE_DOWN  &kp PAGE_UP  &kp END    &trans
+&trans  &trans     &trans     &trans     &trans     &trans       &mt LG(LEFT) LA(LEFT_ARROW)      &kp LEFT       &kp DOWN       &kp UP       &kp RIGHT  &mt LG(RIGHT) LA(RIGHT)
+&trans  &kp LG(Z)  &kp LG(X)  &kp LG(C)  &kp LG(V)  &kp LG(B)    &mt LG(BACKSPACE) LA(BACKSPACE)  &kp BACKSPACE  &kp INS        &kp LC(T)    &kp DEL    &mt LG(DEL) LA(DEL)
+                              &trans     &trans     &trans       &trans                           &trans
+                                         &trans     &trans       &trans
             >;
         };
 
@@ -239,7 +245,7 @@
             bindings = <
 &trans           &bt BT_SEL 0     &bt BT_SEL 1     &bt BT_SEL 2     &bt BT_SEL 3          &bt BT_SEL 4       &bt BT_PRV       &bt BT_NXT       &trans            &bt BT_CLR       &trans           &trans
 &rgb_ug RGB_TOG  &rgb_ug RGB_HUD  &rgb_ug RGB_HUI  &rgb_ug RGB_SAD  &rgb_ug RGB_SAI       &rgb_ug RGB_EFR    &rgb_ug RGB_EFF  &rgb_ug RGB_BRD  &rgb_ug RGB_BRI   &rgb_ug RGB_SPD  &rgb_ug RGB_SPI  &rgb_ug RGB_COLOR_HSB(248,100,66)
-&bl BL_TOG       &kp C_BRI_DEC    &kp C_BRI_INC    &trans           &trans                &trans             &trans           &kp C_PREVIOUS   &kp C_PLAY_PAUSE  &kp C_NEXT       &kp C_VOL_DN     &kp C_VOLUME_UP
+&bl BL_TOG       &kp C_BRI_DEC    &kp C_BRI_INC    &kp K_APP        &trans                &trans             &trans           &kp C_PREVIOUS   &kp C_PLAY_PAUSE  &kp C_NEXT       &kp C_VOL_DN     &kp C_VOLUME_UP
 &trans           &trans           &trans           &kp LS(LG(N7))   &kp LG(LS(NUMBER_4))  &trans             &trans           &trans           &trans            &trans           &trans           &trans
                                                    &trans           &trans                &trans             &trans           &trans
                                                                     &trans                &trans             &trans
