@@ -3,23 +3,20 @@
  *
  * SPDX-License-Identifier: MIT
  */
- 
 #include "charybdis.dtsi"
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 
 &default_transform {
     col-offset = <6>;
-}; 
+};
 
 &kscan0 {
-	col-gpios
-		= <&gpio0 2 GPIO_ACTIVE_HIGH>
-		, <&gpio0 29 GPIO_ACTIVE_HIGH>
-		, <&gpio0 9 GPIO_ACTIVE_HIGH>
-		, <&gpio1 0  GPIO_ACTIVE_HIGH>
-		, <&gpio0 11 GPIO_ACTIVE_HIGH>
-		, <&gpio1 4  GPIO_ACTIVE_HIGH>
-		;
+    col-gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>,
+                <&gpio0 29 GPIO_ACTIVE_HIGH>,
+                <&gpio0 9 GPIO_ACTIVE_HIGH>,
+                <&gpio1 0 GPIO_ACTIVE_HIGH>,
+                <&gpio0 11 GPIO_ACTIVE_HIGH>,
+                <&gpio1 4 GPIO_ACTIVE_HIGH>;
 };
 
 // trackball
@@ -27,55 +24,56 @@
     spi0_default: spi0_default {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 8)>,
-                <NRF_PSEL(SPIM_MOSI, 0, 17)>,
-                <NRF_PSEL(SPIM_MISO, 0, 17)>;
+                    <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 17)>;
         };
     };
-
     spi0_sleep: spi0_sleep {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 8)>,
-                <NRF_PSEL(SPIM_MOSI, 0, 17)>,
-                <NRF_PSEL(SPIM_MISO, 0, 17)>;
+                    <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                    <NRF_PSEL(SPIM_MISO, 0, 17)>;
             low-power-enable;
         };
     };
 };
 
-&spi0 {  // или &spi1 — смотри по своему пину
+&spi0 {
     status = "okay";
     compatible = "nordic,nrf-spim";
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio0 20 GPIO_ACTIVE_LOW>;
 
     trackball: trackball@0 {
         status = "okay";
-        compatible = "pixart,pmw3610-alt";
+        compatible = "pixart,pmw3610-alt";  // ← ИЗМЕНИЛ на -alt
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio0 XX (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  // ← твои пины IRQ
-        cpi = <600>;          // ← твоё значение CPI
-        // swap-xy;           // опционально
-        // invert-x;
-        // invert-y;
+        irq-gpios = <&gpio0 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  // ← 6 — стандарт для Charybdis right
+        cpi = <600>;  // ← можно изменить на своё
 
-        /* ←←← ЭТО НОВОЕ И ОБЯЗАТЕЛЬНОЕ */
+        // ←←← ОБЯЗАТЕЛЬНЫЕ для badjeff-драйвера
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
-        force-awake;          // рекомендуется для стабильности
-        // force-awake-4ms-mode;  // раскомментируй, если хочешь 250 Гц polling
+        force-awake;  // ← рекомендуется
+
+        // swap-xy;       // ← раскомментируй, если нужно поменять оси
+        // invert-x;
+        // invert-y;
     };
 };
 
-
-//RGB bus
+// RGB bus
 &pinctrl {
     spi3_default: spi3_default {
         group1 {
             psels = <NRF_PSEL(SPIM_MOSI, 0, 10)>;
         };
     };
-
     spi3_sleep: spi3_sleep {
         group1 {
             psels = <NRF_PSEL(SPIM_MOSI, 0, 10)>;
@@ -87,20 +85,15 @@
 &spi3 {
     compatible = "nordic,nrf-spim";
     status = "okay";
-
     pinctrl-0 = <&spi3_default>;
     pinctrl-1 = <&spi3_sleep>;
     pinctrl-names = "default", "sleep";
 
     led_strip: ws2812@0 {
         compatible = "worldsemi,ws2812-spi";
-
-        /* SPI */
-        reg = <0>; /* ignored, but necessary for SPI bindings */
+        reg = <0>;
         spi-max-frequency = <4000000>;
-
-        /* WS2812 */
-        chain-length = <27>; /* number of LEDs */
+        chain-length = <27>;
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
         color-mapping = <LED_COLOR_ID_GREEN
@@ -109,13 +102,9 @@
     };
 };
 
-
-
 / {
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
     };
 };
-
-
