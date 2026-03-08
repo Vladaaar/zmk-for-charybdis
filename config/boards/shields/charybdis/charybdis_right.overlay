@@ -109,16 +109,50 @@
         device = <&trackball>;
     };
 
-    scroll_processor: scroll_processor {
+    // 1. Mapper: преобразует X/Y → wheel (вертикальный скролл)
+    scroll_mapper: scroll_mapper {
         compatible = "zmk,input-processor";
-        label = "Scroll Processor";
+        label = "XY to Scroll Mapper";
+        #binding-cells = <0>;
+
+        device = <&trackball>;
+        layers = <4>;                           // твой scroll-layers слой (индекс 4)
+
+        // Используем предопределённый mapper (если подключены input/processors.dtsi)
+        // Или явно:
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_Y>;                  // берём только вертикальное движение
+        map-to = <INPUT_REL_WHEEL>;             // → wheel
+        invert = <0>;                           // направление скролла
+    };
+
+    // 2. Scaler: регулирует скорость скролла (чтобы не было слишком медленно/быстро)
+    scroll_scaler: scroll_scaler {
+        compatible = "zmk,input-processor";
+        label = "Scroll Scaler";
         #binding-cells = <0>;
 
         device = <&trackball>;
         layers = <4>;
-        x-scale = <0>;
-        y-scale = <0>;
-        wheel-scale = <10>;
-        wheel-invert = <0>;
+
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_WHEEL>;
+        multiplier = <15>;                      // основной масштаб (10–30)
+        divisor = <1>;                          // обычно 1, можно увеличить для плавности
+    };
+
+    // 3. Transform: инверсия/своп, если нужно (опционально)
+    scroll_transform: scroll_transform {
+        compatible = "zmk,input-processor";
+        label = "Scroll Transform";
+        #binding-cells = <0>;
+
+        device = <&trackball>;
+        layers = <4>;
+
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_WHEEL>;
+        transform = <INPUT_TRANSFORM_WHEEL_INVERT>;  // если скролл в обратную сторону
+        // Или <INPUT_TRANSFORM_WHEEL_SWAP> если нужен горизонтальный скролл
     };
 };
