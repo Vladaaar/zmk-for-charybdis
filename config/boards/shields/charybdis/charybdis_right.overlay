@@ -5,6 +5,8 @@
  */
 #include "charybdis.dtsi"
 #include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <dt-bindings/zmk/input_transform.h>
+#include <input/processors.dtsi>   // если используешь предопределённые &zip_*
 
 &default_transform {
     col-offset = <6>;
