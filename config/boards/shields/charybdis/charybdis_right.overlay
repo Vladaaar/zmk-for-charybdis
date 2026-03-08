@@ -62,8 +62,8 @@
         force-awake;  // ← рекомендуется
 
         swap-xy;       // ← раскомментируй, если нужно поменять оси
-        // invert-x;
-        // invert-y;
+        invert-x;
+        invert-y;
     };
 };
 
