@@ -241,6 +241,13 @@
             tapping-term-ms = <200>;
             flavor = "tap-preferred";
         };
+
+        punct: punct {
+            compatible = "zmk,behavior-tap-dance";
+            label = "PUNCT";
+            #binding-cells = <0>;
+            bindings = <&lt 2 LS(SLASH)>, <&kp SLASH>;
+        };
     };
 
     keymap {
@@ -252,7 +259,7 @@
 &kp UP    &mt LS(LCTRL) Q      &mt LS(LEFT_ALT) W   &mt LS(LCMD) E             &kp R                &mt GRAVE T            &kp Y                &kp U                &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
 &kp DOWN  &mt LCTRL A          &mt LEFT_ALT S       &mt LCMD D                 &mt LSHIFT F         &kp G                  &kp H                &mt RSHIFT J         &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
 &kp LEFT  &mt LG(Z) Z          &mt LG(X) X          &mt LG(C) C                &mt LG(V) V          &kp B                  &kp N                &kp M                &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
-                                                    &lt 1 BACKSPACE            &lt 2 SPACE          &lang                  &lt 2 LS(SLASH)      &lt 1 SPACE
+                                                    &lt 1 BACKSPACE            &lt 2 SPACE          &lang                  &punct               &lt 1 SPACE
                                                                                &lt 3 TAB            &shift_dance           &lt 3 RET
             >;
         };
