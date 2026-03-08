@@ -105,49 +105,38 @@
 };
 
 / {
+    // 1. Описываем процессоры ввода
+    // Процессор для превращения движения Y в скролл (Wheel)
+    ib_scroll_mapper: ib_scroll_mapper {
+        compatible = "zmk,input-processor-code-mapper";
+        #binding-cells = <0>;
+        map {
+            // Исходный код -> Целевой код
+            <INPUT_REL_Y INPUT_REL_WHEEL>
+            <INPUT_REL_X INPUT_REL_HWHEEL>
+        };
+    };
+
+    // Процессор для масштабирования (чувствительности)
+    ib_scroll_scaler: ib_scroll_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #binding-cells = <2>; // Ожидает multiplier и divisor
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
+    };
+
+    // 2. Настраиваем листенер, который всё это объединяет
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-    };
 
-    // Mapper: только вертикальное движение → скролл
-    scroll_mapper: scroll_mapper {
-        compatible = "zmk,input-processor";
-        label = "XY to Scroll Mapper";
-        #binding-cells = <0>;
-        device = <&trackball>;
-        layers = <4>;
-
-        type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_Y>;
-        map-to = <INPUT_REL_WHEEL>;
-        invert = <0>;
-    };
-
-    // Scaler: скорость скролла
-    scroll_scaler: scroll_scaler {
-        compatible = "zmk,input-processor";
-        label = "Scroll Scaler";
-        #binding-cells = <0>;
-        device = <&trackball>;
-        layers = <4>;
-
-        type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_WHEEL>;
-        multiplier = <15>;
-        divisor = <1>;
-    };
-
-    // Transform: инверсия скролла (если нужно)
-    scroll_transform: scroll_transform {
-        compatible = "zmk,input-processor";
-        label = "Scroll Transform";
-        #binding-cells = <0>;
-        device = <&trackball>;
-        layers = <4>;
-
-        type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_WHEEL>;
-        transform = <INPUT_TRANSFORM_WHEEL_INVERT>;
+        // Слой 4 — это твой слой скролла
+        // Процессоры выполняются по порядку сверху вниз
+        scroller {
+            layers = <4>;
+            input-processors 
+                = <&ib_scroll_mapper>
+                , <&ib_scroll_scaler 1 15>; // Здесь задаем скорость (1 к 15)
+        };
     };
 };
