@@ -59,13 +59,14 @@
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
 
-        force-awake;  // ← рекомендуется
+        force-awake;  
 
-        swap-xy;       // ← раскомментируй, если нужно поменять оси
+        swap-xy;      
         invert-x;
         invert-y;
     };
 };
+
 
 // RGB bus
 &pinctrl {
@@ -106,5 +107,18 @@
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
+    };
+
+    scroll_processor: scroll_processor {
+        compatible = "zmk,input-processor";
+        label = "Scroll Processor";
+        #binding-cells = <0>;
+
+        device = <&trackball>;
+        layers = <4>;
+        x-scale = <0>;
+        y-scale = <0>;
+        wheel-scale = <10>;
+        wheel-invert = <0>;
     };
 };
