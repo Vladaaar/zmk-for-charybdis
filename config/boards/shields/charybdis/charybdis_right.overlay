@@ -105,38 +105,29 @@
 };
 
 / {
-    // 1. Описываем процессоры ввода
-    // Процессор для превращения движения Y в скролл (Wheel)
-    ib_scroll_mapper: ib_scroll_mapper {
+    // 1. Описываем процессоры как независимые ноды в корне
+    scroll_mapper: scroll_mapper {
         compatible = "zmk,input-processor-code-mapper";
         #binding-cells = <0>;
-        map {
-            // Исходный код -> Целевой код
-            <INPUT_REL_Y INPUT_REL_WHEEL>
-            <INPUT_REL_X INPUT_REL_HWHEEL>
-        };
+        map = <INPUT_REL_Y INPUT_REL_WHEEL>;
     };
 
-    // Процессор для масштабирования (чувствительности)
-    ib_scroll_scaler: ib_scroll_scaler {
+    scroll_scaler: scroll_scaler {
         compatible = "zmk,input-processor-scaler";
-        #binding-cells = <2>; // Ожидает multiplier и divisor
+        #binding-cells = <2>;
         type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
+        codes = <INPUT_REL_WHEEL>;
     };
 
-    // 2. Настраиваем листенер, который всё это объединяет
+    // 2. Листенер тоже в корне
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        // Слой 4 — это твой слой скролла
-        // Процессоры выполняются по порядку сверху вниз
+        // Эта нода внутри листнера описывает поведение для 4 слоя
         scroller {
             layers = <4>;
-            input-processors 
-                = <&ib_scroll_mapper>
-                , <&ib_scroll_scaler 1 15>; // Здесь задаем скорость (1 к 15)
+            input-processors = <&scroll_mapper>, <&scroll_scaler 1 15>;
         };
     };
 };
