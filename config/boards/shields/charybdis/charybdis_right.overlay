@@ -105,29 +105,23 @@
 };
 
 / {
-    // 1. Описываем процессоры как независимые ноды в корне
-    scroll_mapper: scroll_mapper {
-        compatible = "zmk,input-processor-code-mapper";
-        #binding-cells = <0>;
-        map = <INPUT_REL_Y INPUT_REL_WHEEL>;
-    };
-
-    scroll_scaler: scroll_scaler {
-        compatible = "zmk,input-processor-scaler";
-        #binding-cells = <2>;
-        type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_WHEEL>;
-    };
-
-    // 2. Листенер тоже в корне
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
+    };
 
-        // Эта нода внутри листнера описывает поведение для 4 слоя
-        scroller {
-            layers = <4>;
-            input-processors = <&scroll_mapper>, <&scroll_scaler 1 15>;
-        };
+    // Простой и стабильный scroll processor
+    scroll_processor: scroll_processor {
+        compatible = "zmk,input-processor";
+        label = "Scroll Processor";
+        #binding-cells = <0>;
+
+        device = <&trackball>;
+        layers = <4>;
+
+        x-scale = <0>;
+        y-scale = <0>;
+        wheel-scale = <12>;      // скорость скролла (подбери 8–15)
+        wheel-invert = <0>;      // 1 — если направление наоборот
     };
 };
