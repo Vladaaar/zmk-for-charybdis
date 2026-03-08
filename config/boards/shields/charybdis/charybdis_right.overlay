@@ -110,7 +110,7 @@
         device = <&trackball>;
     };
 
-    // Processor 1: Mapper XY → Wheel (только вертикальный скролл)
+    // 1. Mapper: XY → Wheel (вертикальный скролл)
     scroll_mapper: scroll_mapper {
         compatible = "zmk,input-processor";
         label = "XY to Scroll Mapper";
@@ -124,7 +124,7 @@
         invert = <0>;
     };
 
-    // Processor 2: Scaler для регулировки скорости скролла
+    // 2. Scaler: регулировка скорости скролла
     scroll_scaler: scroll_scaler {
         compatible = "zmk,input-processor";
         label = "Scroll Scaler";
@@ -138,7 +138,7 @@
         divisor = <1>;
     };
 
-    // Processor 3: Transform (инверсия скролла, если нужно)
+    // 3. Transform: инверсия скролла (если нужно)
     scroll_transform: scroll_transform {
         compatible = "zmk,input-processor";
         label = "Scroll Transform";
