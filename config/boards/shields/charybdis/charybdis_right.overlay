@@ -154,7 +154,6 @@
 
         type = <INPUT_EV_REL>;
         codes = <INPUT_REL_WHEEL>;
-        transform = <INPUT_TRANSFORM_WHEEL_INVERT>;  // если скролл в обратную сторону
-        // Или <INPUT_TRANSFORM_WHEEL_SWAP> если нужен горизонтальный скролл
+        transform = <INPUT_TRANSFORM_WHEEL_INVERT>;  
     };
 };
