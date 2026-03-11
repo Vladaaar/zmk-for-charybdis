@@ -305,8 +305,8 @@
 &kp UP    &mt LS(LCTRL) Q                    &mt LS(LEFT_ALT) W         &mt LS(LCMD) E             &kp R                      &mt GRAVE T            &kp Y                              &kp U                              &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
 &kp DOWN  &mt LCTRL A                        &mt LEFT_ALT S             &mt LCMD D                 &mt LSHIFT F               &kp G                  &kp H                              &mt RSHIFT J                       &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
 &kp LEFT  &once_sym_on_hold LG(Z) Z          &once_sym_on_hold LG(X) X  &once_sym_on_hold LG(C) C  &once_sym_on_hold LG(V) V  &kp B                  &kp N                              &kp M                              &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
-                                                                        &lt 1 BACKSPACE            &lt 2 SPACE                &lang                  &punct                             &lt 1 SPACE
-                                                                                                   &lt 3 TAB                  &shift_dance           &lt 3 RET
+                                                                        &shift_dance               &lt 1 SPACE                &lang                  &punct                             &lt 1 SPACE
+                                                                                                   &lt 2 TAB                  &lt 3 BACKSPACE        &lt 3 RET
             >;
         };
 
@@ -323,12 +323,12 @@
 
         NAV_EDIT {
             bindings = <
-&trans  &trans     &trans     &trans      &trans     &trans       &trans                           &trans         &trans         &trans       &trans     &trans
-&trans  &trans     &trans     &trans      &trans     &trans       &trans                           &kp HOME       &kp PAGE_DOWN  &kp PAGE_UP  &kp END    &trans
-&trans  &trans     &trans     &trans      &trans     &trans       &mt LG(LEFT) LA(LEFT_ARROW)      &kp LEFT       &kp DOWN       &kp UP       &kp RIGHT  &mt LG(RIGHT) LA(RIGHT)
-&trans  &kp LG(Z)  &kp LG(X)  &kp LG(C)   &kp LG(V)  &kp LG(B)    &mt LG(BACKSPACE) LA(BACKSPACE)  &kp BACKSPACE  &kp INS        &kp LC(T)    &kp DEL    &mt LG(DEL) LA(DEL)
-                              &kp DELETE  &trans     &trans       &trans                           &trans
-                                          &trans     &trans       &trans
+&trans  &trans     &trans     &trans     &trans     &trans       &trans                           &trans         &trans         &trans       &trans     &trans
+&trans  &trans     &trans     &trans     &trans     &trans       &trans                           &kp HOME       &kp PAGE_DOWN  &kp PAGE_UP  &kp END    &trans
+&trans  &trans     &trans     &trans     &trans     &trans       &mt LG(LEFT) LA(LEFT_ARROW)      &kp LEFT       &kp DOWN       &kp UP       &kp RIGHT  &mt LG(RIGHT) LA(RIGHT)
+&trans  &kp LG(Z)  &kp LG(X)  &kp LG(C)  &kp LG(V)  &kp LG(B)    &mt LG(BACKSPACE) LA(BACKSPACE)  &kp BACKSPACE  &kp INS        &kp LC(T)    &kp DEL    &mt LG(DEL) LA(DEL)
+                              &trans     &trans     &trans       &trans                           &trans
+                                         &trans     &kp DEL      &trans
             >;
         };
 
