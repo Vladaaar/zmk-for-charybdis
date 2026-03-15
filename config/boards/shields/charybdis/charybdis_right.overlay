@@ -108,20 +108,14 @@
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-    };
 
-    // Простой и стабильный scroll processor
-    scroll_processor: scroll_processor {
-        compatible = "zmk,input-processor";
-        label = "Scroll Processor";
-        #binding-cells = <0>;
+        // Базовый процессор для всех слоёв (обычное движение курсора)
+        input-processors = <&zip_xy_scaler 1 1>;
 
-        device = <&trackball>;
-        layers = <4>;
-
-        x-scale = <0>;
-        y-scale = <0>;
-        wheel-scale = <12>;      // скорость скролла (подбери 8–15)
-        wheel-invert = <0>;      // 1 — если направление наоборот
+        // Переопределение только для слоя 4 (скролл)
+        scroll_layer {
+            layers = <4>;
+            input-processors = <&zip_xy_to_scroll_mapper &zip_scroll_scaler 10 1>;
+        };
     };
 };
