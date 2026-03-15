@@ -100,6 +100,24 @@
 };
 
 / {
+    // Маппер осей X/Y → колёсика скролла
+    tb_scroll_mapper: tb_scroll_mapper {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        input-codes  = <INPUT_REL_X INPUT_REL_Y>;
+        output-codes = <INPUT_REL_HWHEEL INPUT_REL_WHEEL>;
+    };
+
+    // Делитель скорости скролла
+    tb_scroll_scaler: tb_scroll_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
+        track-remainders;
+    };
+
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
@@ -107,8 +125,8 @@
         scroll_layer: scroll_layer {
             layers = <4>;
             input-processors =
-                <&zip_xy_to_scroll_mapper>,
-                <&zip_scroll_scaler 1 8>;
+                <&tb_scroll_mapper>,
+                <&tb_scroll_scaler 1 8>;
         };
     };
 };
