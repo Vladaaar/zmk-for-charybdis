@@ -58,10 +58,8 @@
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
-        // force-awake УБРАН — причина зависаний
         swap-xy;
-        invert-x;
-        invert-y;
+        // invert-x и invert-y УБРАНЫ — переносим в processor
     };
 };
 
@@ -101,20 +99,28 @@
 };
 
 / {
+    // Инвертирующий скейлер для курсора: -1/1 = инверсия обеих осей
+    cursor_invert: cursor_invert {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_X INPUT_REL_Y>;
+        track-remainders;
+    };
+
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        input-processors = <&zip_xy_scaler 1 1>;
+        // Курсор — инверсия через processor, движение 1:1
+        input-processors = <&cursor_invert (-1) 1>;
 
+        // Слой 4 — скролл без инверсии, медленно
         scroll_layer: scroll_layer {
             layers = <4>;
             input-processors =
-                // Y→WHEEL (вертикаль), X→HWHEEL (горизонталь)
-                // Меняем порядок относительно предыдущего — инверсия фикс
                 <&zip_xy_to_scroll_mapper>,
-                <&zip_scroll_scaler 1 20>,   // 1/20 — медленно, подбери 15–25
-                <&zip_scroll_invert>;         // инвертировать направление
+                <&zip_scroll_scaler 1 20>;
         };
     };
 };
