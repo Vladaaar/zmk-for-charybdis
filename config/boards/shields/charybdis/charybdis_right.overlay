@@ -105,15 +105,16 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        // Обычный режим — курсор, скорость 1:1
         input-processors = <&zip_xy_scaler 1 1>;
 
-        // Слой 4 — скролл
         scroll_layer: scroll_layer {
             layers = <4>;
             input-processors =
+                // Y→WHEEL (вертикаль), X→HWHEEL (горизонталь)
+                // Меняем порядок относительно предыдущего — инверсия фикс
                 <&zip_xy_to_scroll_mapper>,
-                <&zip_scroll_scaler 1 8>;
+                <&zip_scroll_scaler 1 20>,   // 1/20 — медленно, подбери 15–25
+                <&zip_scroll_invert>;         // инвертировать направление
         };
     };
 };
