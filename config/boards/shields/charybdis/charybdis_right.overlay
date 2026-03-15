@@ -20,7 +20,7 @@
                 <&gpio1 4 GPIO_ACTIVE_HIGH>;
 };
 
-// trackball
+// ─── Trackball SPI ───────────────────────────────────────────
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
@@ -49,27 +49,22 @@
 
     trackball: trackball@0 {
         status = "okay";
-        compatible = "pixart,pmw3610-alt";  // ← ИЗМЕНИЛ на -alt
+        compatible = "pixart,pmw3610-alt";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio0 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;  // ← 6 — стандарт для Charybdis right
-        cpi = <600>;  // ← можно изменить на своё
-
-        // ←←← ОБЯЗАТЕЛЬНЫЕ для badjeff-драйвера
+        irq-gpios = <&gpio0 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        cpi = <600>;
         evt-type = <INPUT_EV_REL>;
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
-
-        force-awake;  
-
-        swap-xy;      
+        // force-awake УБРАН — причина зависаний
+        swap-xy;
         invert-x;
         invert-y;
     };
 };
 
-
-// RGB bus
+// ─── RGB SPI ──────────────────────────────────────────────────
 &pinctrl {
     spi3_default: spi3_default {
         group1 {
@@ -104,18 +99,50 @@
     };
 };
 
+// ─── Input processors ─────────────────────────────────────────
 / {
+    // Скейлер для обычного курсора
+    cursor_scaler: cursor_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_X INPUT_REL_Y>;
+        track-remainders;
+        // множитель/делитель: движение 1:1
+        multiplier = <1>;
+        divisor = <1>;
+    };
+
+    // Маппер X/Y → scroll wheel
+    scroll_mapper: scroll_mapper {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        input-codes  = <INPUT_REL_X INPUT_REL_Y>;
+        output-codes = <INPUT_REL_HWHEEL INPUT_REL_WHEEL>;
+    };
+
+    // Скейлер скорости скролла (делим на 8 — подбери 4–12)
+    scroll_scaler: scroll_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
+        track-remainders;
+        multiplier = <1>;
+        divisor = <8>;
+    };
+
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
+        // Обычный режим — курсор
+        input-processors = <&cursor_scaler>;
 
-        // Базовый процессор для всех слоёв (обычное движение курсора)
-        input-processors = <&zip_xy_scaler 1 1>;
-
-        // Переопределение только для слоя 4 (скролл)
-        scroll_layer {
+        // Слой 4 — скролл
+        scroll_layer: scroll_layer {
             layers = <4>;
-            input-processors = <&zip_xy_to_scroll_mapper &zip_scroll_scaler 10 1>;
+            input-processors = <&scroll_mapper &scroll_scaler>;
         };
     };
 };
