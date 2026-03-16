@@ -100,20 +100,37 @@
 };
 
 / {
+    // Собственный маппер с явным контролем направления
+    tb_scroll_mapper: tb_scroll_mapper {
+        compatible = "zmk,input-processor-code-mapper";
+        #input-processor-cells = <0>;
+        type = <INPUT_EV_REL>;
+        // пары: input-code → output-code
+        map = <INPUT_REL_X INPUT_REL_HWHEEL
+               INPUT_REL_Y INPUT_REL_WHEEL>;
+    };
+
+    // Скейлер для скролла с инверсией Y (WHEEL)
+    tb_scroll_scaler: tb_scroll_scaler {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
+        track-remainders;
+    };
+
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-
-        // Курсор: инверсия из драйвера, processor не нужен
-        // input-processors не указываем — движение 1:1
+        // курсор — инверсия из драйвера, без processor
 
         scroll_layer: scroll_layer {
             layers = <4>;
             input-processors =
-                <&zip_xy_to_scroll_mapper>,
-                // положительный multiplier компенсирует инверсию драйвера
-                // скорость подбирай делителем: 20/12/6
-                <&zip_scroll_scaler (-1) 12>;
+                <&tb_scroll_mapper>,
+                <&tb_scroll_scaler (-1) 12>;
+                // (-1) инвертирует И WHEEL И HWHEEL
+                // если нужна инверсия только вертикали — скажи, сделаем два скейлера
         };
     };
 };
