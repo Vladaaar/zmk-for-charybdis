@@ -99,7 +99,6 @@
 };
 
 / {
-    // Инвертирующий скейлер для курсора: -1/1 = инверсия обеих осей
     cursor_invert: cursor_invert {
         compatible = "zmk,input-processor-scaler";
         #input-processor-cells = <2>;
@@ -112,15 +111,16 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        // Курсор — инверсия через processor, движение 1:1
+        // Курсор: инверсия X и Y через processor (драйвер без invert)
         input-processors = <&cursor_invert (-1) 1>;
 
-        // Слой 4 — скролл без инверсии, медленно
         scroll_layer: scroll_layer {
             layers = <4>;
             input-processors =
                 <&zip_xy_to_scroll_mapper>,
-                <&zip_scroll_scaler 1 20>;
+                // отрицательный multiplier = инверсия + замедление
+                // (-1)/20 — попробуй (-1)/10 или (-1)/6 если медленно
+                <&zip_scroll_scaler (-1) 20>;
         };
     };
 };
