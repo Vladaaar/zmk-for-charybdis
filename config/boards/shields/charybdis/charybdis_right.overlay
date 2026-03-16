@@ -113,7 +113,7 @@
                 <&zip_xy_to_scroll_mapper>,
                 // положительный multiplier компенсирует инверсию драйвера
                 // скорость подбирай делителем: 20/12/6
-                <&zip_scroll_scaler 1 12>;
+                <&zip_scroll_scaler (-1) 12>;
         };
     };
 };
