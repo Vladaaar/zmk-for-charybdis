@@ -100,37 +100,42 @@
 };
 
 / {
-    // Собственный маппер с явным контролем направления
     tb_scroll_mapper: tb_scroll_mapper {
         compatible = "zmk,input-processor-code-mapper";
         #input-processor-cells = <0>;
         type = <INPUT_EV_REL>;
-        // пары: input-code → output-code
         map = <INPUT_REL_X INPUT_REL_HWHEEL
                INPUT_REL_Y INPUT_REL_WHEEL>;
     };
 
-    // Скейлер для скролла с инверсией Y (WHEEL)
-    tb_scroll_scaler: tb_scroll_scaler {
+    // Вертикальный скролл — инвертированный
+    tb_scroll_scaler_v: tb_scroll_scaler_v {
         compatible = "zmk,input-processor-scaler";
         #input-processor-cells = <2>;
         type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_WHEEL INPUT_REL_HWHEEL>;
+        codes = <INPUT_REL_WHEEL>;
+        track-remainders;
+    };
+
+    // Горизонтальный скролл — без инверсии
+    tb_scroll_scaler_h: tb_scroll_scaler_h {
+        compatible = "zmk,input-processor-scaler";
+        #input-processor-cells = <2>;
+        type = <INPUT_EV_REL>;
+        codes = <INPUT_REL_HWHEEL>;
         track-remainders;
     };
 
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        // курсор — инверсия из драйвера, без processor
 
         scroll_layer: scroll_layer {
             layers = <4>;
             input-processors =
                 <&tb_scroll_mapper>,
-                <&tb_scroll_scaler (-1) 12>;
-                // (-1) инвертирует И WHEEL И HWHEEL
-                // если нужна инверсия только вертикали — скажи, сделаем два скейлера
+                <&tb_scroll_scaler_v (-1) 12>,   // вертикаль: инверсия + скорость
+                <&tb_scroll_scaler_h 1 12>;       // горизонталь: без инверсии
         };
     };
 };
