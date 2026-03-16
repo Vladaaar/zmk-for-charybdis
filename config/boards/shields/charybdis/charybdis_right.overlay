@@ -59,7 +59,8 @@
         x-input-code = <INPUT_REL_X>;
         y-input-code = <INPUT_REL_Y>;
         swap-xy;
-        // invert-x и invert-y УБРАНЫ — переносим в processor
+        invert-x;   // ← вернули
+        invert-y;   // ← вернули
     };
 };
 
@@ -99,28 +100,20 @@
 };
 
 / {
-    cursor_invert: cursor_invert {
-        compatible = "zmk,input-processor-scaler";
-        #input-processor-cells = <2>;
-        type = <INPUT_EV_REL>;
-        codes = <INPUT_REL_X INPUT_REL_Y>;
-        track-remainders;
-    };
-
     trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        // Курсор: инверсия X и Y через processor (драйвер без invert)
-        input-processors = <&cursor_invert (-1) 1>;
+        // Курсор: инверсия из драйвера, processor не нужен
+        // input-processors не указываем — движение 1:1
 
         scroll_layer: scroll_layer {
             layers = <4>;
             input-processors =
                 <&zip_xy_to_scroll_mapper>,
-                // отрицательный multiplier = инверсия + замедление
-                // (-1)/20 — попробуй (-1)/10 или (-1)/6 если медленно
-                <&zip_scroll_scaler (-1) 20>;
+                // положительный multiplier компенсирует инверсию драйвера
+                // скорость подбирай делителем: 20/12/6
+                <&zip_scroll_scaler 1 12>;
         };
     };
 };
