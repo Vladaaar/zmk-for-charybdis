@@ -138,6 +138,11 @@
                 <&tb_scroll_scaler_v 1 20>,   // вертикаль: инверсия + скорость
                 <&tb_scroll_scaler_h (-1) 20>;       // горизонталь: без инверсии
         };
+
+        arrow_layer: arrow_layer {
+            layers = <5>;
+            input-processors = <&zip_keybind_arrows>;
+        };
     };
 
     // arrows through trackball
