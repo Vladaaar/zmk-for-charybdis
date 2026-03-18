@@ -4,16 +4,20 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: badjeff
       url-base: https://github.com/badjeff
+    - name: zettaface        
+      url-base: https://github.com/zettaface
 
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: main
       import: app/west.yml
-
     - name: zmk-pmw3610-driver
       remote: badjeff               # ← изменил remote
       revision: main                # или конкретный коммит после октября 2025, если хочешь зафиксировать
+    - name: zmk-input-processor-keybind  
+      remote: zettaface
+      revision: main
 
   self:
     path: config
