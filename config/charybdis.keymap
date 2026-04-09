@@ -271,13 +271,13 @@
             compatible = "zmk,behavior-tap-dance";
             label = "PUNCT";
             #binding-cells = <0>;
-            bindings = <&splayer 2 LS(SLASH)>, <&sp_after SLASH>;
+            bindings = <&splayer LCMD LS(SLASH)>, <&sp_after SLASH>;
         };
 
         splayer: splayer {
             compatible = "zmk,behavior-hold-tap";
             label = "SPLAYER";
-            bindings = <&mo>, <&sp_after>;
+            bindings = <&kp>, <&sp_after>;
 
             #binding-cells = <2>;
             tapping-term-ms = <200>;
@@ -300,16 +300,16 @@
 
         QWERTY {
             bindings = <
-&kp ESC   &sp_after_on_hold LS(N1) NUMBER_1  &mt LS(N2) NUMBER_2        &mt LS(NUMBER_3) NUMBER_3  &mt LS(N4) NUMBER_4        &mt LS(N5) NUMBER_5    &sp_after_on_hold RS(N6) NUMBER_6  &sp_after_on_hold RS(N7) NUMBER_7  &mt RS(N8) NUMBER_8          &parentheses_on_hold 0 N9  &brackets_on_hold 0 NUMBER_0  &dash_on_hold LS(LA(MINUS)) MINUS
-&kp UP    &mt LS(LCTRL) Q                    &mt LS(LEFT_ALT) W         &mt LS(LCMD) E             &kp R                      &mt GRAVE T            &kp Y                              &kp U                              &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
-&kp DOWN  &mt LCTRL A                        &mt LEFT_ALT S             &mt LCMD D                 &mt LSHIFT F               &kp G                  &kp H                              &mt RSHIFT J                       &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
-&kp LEFT  &once_sym_on_hold LG(Z) Z          &once_sym_on_hold LG(X) X  &once_sym_on_hold LG(C) C  &once_sym_on_hold LG(V) V  &kp B                  &kp N                              &kp M                              &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
-                                                                        &shift_dance               &lt 1 SPACE                &lang                  &punct                             &lt 1 SPACE
-                                                                                                   &lt 2 TAB                  &lt 3 BACKSPACE        &lt 3 RET
+&kp ESC   &mt LS(N1) NUMBER_1        &mt LS(N2) NUMBER_2        &mt LS(NUMBER_3) NUMBER_3  &mt LS(N4) NUMBER_4        &mt LS(N5) NUMBER_5    &mt RS(N6) NUMBER_6  &mt RS(N7) NUMBER_7  &mt RS(N8) NUMBER_8          &parentheses_on_hold 0 N9  &brackets_on_hold 0 NUMBER_0  &dash_on_hold LS(LA(MINUS)) MINUS
+&kp UP    &mt LS(LCTRL) Q            &mt LS(LEFT_ALT) W         &mt LS(LCMD) E             &kp R                      &mt GRAVE T            &kp Y                &kp U                &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
+&kp DOWN  &mt LCTRL A                &mt LEFT_ALT S             &mt LCMD D                 &mt LSHIFT F               &kp G                  &kp H                &mt RSHIFT J         &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
+&kp LEFT  &once_sym_on_hold LG(Z) Z  &once_sym_on_hold LG(X) X  &once_sym_on_hold LG(C) C  &once_sym_on_hold LG(V) V  &kp B                  &kp N                &kp M                &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
+                                                                &lang                      &lt 1 SPACE                &sk LEFT_SHIFT         &punct               &kp SPACE
+                                                                                           &lt 2 TAB                  &mt LCTRL BACKSPACE    &mt LEFT_ALT RET
             >;
         };
 
-        SYMBOLS_FUNC {
+        SYMBOLS {
             bindings = <
 &once_sym_on_hold LA(E) GRAVE  &trans    &trans  &trans    &kp LA(N8)  &trans         &trans        &trans       &trans        &trans                &trans                 &kp EQUAL
 &once_sym_on_hold LA(N) TILDE  &kp EXCL  &kp AT  &kp HASH  &kp DOLLAR  &kp PERCENT    &kp CARET     &kp AMPS     &kp ASTRK     &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp UNDER
@@ -373,6 +373,15 @@
                                         &trans  &trans  &trans    &trans  &trans
                                                 &trans  &trans    &trans
             >;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        function {
+            if-layers = <1 2>;
+            then-layer = <3>;
         };
     };
 };
