@@ -22,7 +22,7 @@
             compatible = "zmk,behavior-macro";
             label = "To1_macro";
             #binding-cells = <0>;
-            bindings = <&rgb_ug RGB_EFF &rgb_ug RGB_COLOR_HSB(128,100,50) &to 1>;
+            bindings = <&rgb_ug RGB_EFF &rgb_ug RGB_COLOR_HSB(128,100,50) &to 2>;
         };
 
         To0_macro: To0_macro {
@@ -37,7 +37,7 @@
             label = "To2_macro";
             #binding-cells = <0>;
             bindings =
-                <&to 3>,
+                <&to 1>,
                 <&macro_wait_time 30>,
                 <&rgb_ug RGB_COLOR_HSB(250,100,50)>;
         };
@@ -304,8 +304,19 @@
 &kp RIGHT_BRACKET               &mt LS(LCTRL) Q            &mt LS(LEFT_ALT) W         &mt LS(LCMD) E             &kp R                      &mt GRAVE T            &kp Y                &kp U                &mt RS(RCMD) I               &mt RS(RIGHT_ALT) O        &mt RS(RCTRL) P               &mt RIGHT_BRACKET LEFT_BRACKET
 &kp BACKSLASH                   &mt LCTRL A                &mt LEFT_ALT S             &mt LCMD D                 &mt LSHIFT F               &kp G                  &kp H                &mt RSHIFT J         &mt RCMD K                   &mt RIGHT_ALT L            &mt RCTRL SEMI                &lt 5 SQT
 &kp LEFT                        &once_sym_on_hold LG(Z) Z  &once_sym_on_hold LG(X) X  &once_sym_on_hold LG(C) C  &once_sym_on_hold LG(V) V  &kp B                  &kp N                &kp M                &guillemets_on_hold 0 COMMA  &lt 4 DOT                  &mt BACKSLASH SLASH           &kp RIGHT
-                                                                                      &lang                      &lt 2 SPACE                &sk LEFT_SHIFT         &punct               &kp SPACE
-                                                                                                                 &lt 3 TAB                  &mt LCTRL BACKSPACE    &mt LEFT_ALT RET
+                                                                                      &lang                      &lt 3 SPACE                &sk LEFT_SHIFT         &punct               &kp SPACE
+                                                                                                                 &lt 1 TAB                  &mt LCTRL BACKSPACE    &mt LEFT_ALT RET
+            >;
+        };
+
+        FUNCTIONS {
+            bindings = <
+&out OUT_TOG  &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2  &bt BT_SEL 3          &bt BT_SEL 4      &bt BT_PRV  &bt BT_NXT  &trans            &bt BT_CLR  &trans             &trans
+&out OUT_BLE  &kp C_BRI_DEC  &kp C_BRI_INC  &trans        &kp LG(LS(NUMBER_4))  &kp LG(LS(N7))    &trans      &kp C_PREV  &kp C_PLAY_PAUSE  &kp C_NEXT  &kp C_VOLUME_DOWN  &kp C_VOL_UP
+&out OUT_USB  &trans         &trans         &trans        &trans                &trans            &trans      &trans      &trans            &trans      &trans             &kp K_MUTE
+&kp F12       &kp F1         &kp F2         &kp F3        &kp F4                &kp F5            &kp F6      &kp F7      &kp F8            &kp F9      &kp F10            &kp F11
+                                            &trans        &trans                &trans            &trans      &trans
+                                                          &trans                &trans            &trans
             >;
         };
 
@@ -328,17 +339,6 @@
 &trans  &kp LG(Z)  &kp LG(X)  &kp LG(C)  &kp LG(V)  &kp LG(B)    &mt LG(BACKSPACE) LA(BACKSPACE)  &kp BACKSPACE  &kp INS        &kp LC(T)    &kp DEL    &mt LG(DEL) LA(DEL)
                               &trans     &trans     &trans       &trans                           &trans
                                          &trans     &trans       &trans
-            >;
-        };
-
-        FUNCTIONS {
-            bindings = <
-&out OUT_TOG  &bt BT_SEL 0   &bt BT_SEL 1   &bt BT_SEL 2  &bt BT_SEL 3          &bt BT_SEL 4      &bt BT_PRV  &bt BT_NXT  &trans            &bt BT_CLR  &trans             &trans
-&out OUT_BLE  &kp C_BRI_DEC  &kp C_BRI_INC  &trans        &kp LG(LS(NUMBER_4))  &kp LG(LS(N7))    &trans      &kp C_PREV  &kp C_PLAY_PAUSE  &kp C_NEXT  &kp C_VOLUME_DOWN  &kp C_VOL_UP
-&out OUT_USB  &trans         &trans         &trans        &trans                &trans            &trans      &trans      &trans            &trans      &trans             &kp K_MUTE
-&kp F12       &kp F1         &kp F2         &kp F3        &kp F4                &kp F5            &kp F6      &kp F7      &kp F8            &kp F9      &kp F10            &kp F11
-                                            &trans        &trans                &trans            &trans      &trans
-                                                          &trans                &trans            &trans
             >;
         };
 
@@ -380,8 +380,8 @@
         compatible = "zmk,conditional-layers";
 
         sym {
-            if-layers = <3 2>;
-            then-layer = <1>;
+            if-layers = <1 3>;
+            then-layer = <2>;
         };
     };
 };
